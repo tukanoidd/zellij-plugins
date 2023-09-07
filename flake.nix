@@ -77,7 +77,7 @@
         };
       in {
         packages = {
-          inherit (customPlugins) monocle room;
+          inherit (customPlugins) room;
 
           zfzf = zfzf.packages.${pkgs.system}.default;
         };
@@ -97,7 +97,7 @@
         };
 
         checks = {
-          inherit (self.outputs.packages.${system}) monocle room zfzf;
+          inherit (self.outputs.packages.${system}) room zfzf;
         };
         formatter = pkgs.alejandra;
       }

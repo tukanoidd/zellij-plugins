@@ -48,11 +48,6 @@
       doCheck = false;
     };
 in {
-  monocle = makePlugin {
-    name = "monocle";
-    url = "https://github.com/imsnif/monocle";
-    rev = "d8fb71eef5fb965cee63e37950a191ba5089160b";
-  };
   room = makePlugin {
     name = "room";
     url = "https://github.com/rvcas/room";
