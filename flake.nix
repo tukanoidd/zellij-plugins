@@ -3,30 +3,39 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
+    
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-
     flake-utils.url = "github:numtide/flake-utils";
 
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zellij = {
       url = "github:zellij-org/zellij";
       flake = false;
+    };
+    zfzf = {
+      url = "github:tukanoidd/zfzf";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+        rust-overlay.follows = "rust-overlay";
+        zellij.follows = "zellij";
+      };
     };
   };
 
   outputs = {
     self,
     nixpkgs,
-    zellij,
-    rust-overlay,
     flake-utils,
+    rust-overlay,
+    zellij,
+    zfzf,
     ...
   }: let
     src = zellij;
@@ -69,6 +78,8 @@
       in {
         packages = {
           inherit (customPlugins) monocle room;
+
+          zfzf = zfzf.packages.${pkgs.system}.default;
         };
 
         devShells = {
@@ -86,7 +97,7 @@
         };
 
         checks = {
-          inherit (self.outputs.packages.${system}) monocle;
+          inherit (self.outputs.packages.${system}) monocle room zfzf;
         };
         formatter = pkgs.alejandra;
       }
